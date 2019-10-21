@@ -11,6 +11,8 @@ import './styles.css';
         .then(localMediaStream => {
             video.src = window.URL.createObjectURL(localMediaStream);
             video.play();
+        }).catch(error => {
+            console.error('You denied the webcam access', error);
         });
   };
   getVideo();
