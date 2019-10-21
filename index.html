@@ -8,6 +8,29 @@
     <title>Webcam Fun</title>
 </head>
 <body>
+    <div class="photo-booth">
+        <div class="controls">
+            <button onClick="takePhoto()">Take photo</button>
+        </div>
+        <div class="rgb">
+            <label for="rmin">Red Min:</label>
+            <input id="rmin" name="rmin" type="range" min=0 max=255>
+            <label for="rmax">Red Max:</label>
+            <input id="rmax" name="rmin" type="range" min=0 max=255>
+            <label for="gmin">Green Min:</label>
+            <input id="gmin" name="rmin" type="range" min=0 max=255>
+            <label for="gmax">Green Max:</label>
+            <input id="gmax" name="rmin" type="range" min=0 max=255>
+            <label for="bmin">Blue Min:</label>
+            <input id="bmin" name="rmin" type="range" min=0 max=255>
+            <label for="bmax">Blue Max:</label>
+            <input id="bmax" name="rmin" type="range" min=0 max=255>
+        </div>
+    </div>
+
+    <canvas class="photo"></canvas>
+    <video class="player"></video>
+    <div class="strip"></div>
     <script src="js/main.js"></script>
 </body>
 </html>
