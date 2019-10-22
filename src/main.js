@@ -56,6 +56,33 @@ import './styles.css';
         return pixels;
     };
 
+    const greenEffect = pixels => {
+        for(let i = 0; i < pixels.data.length; i += 4) {
+            pixels.data[i] = pixels.data[i] - 500; //red
+            pixels.data[i + 1] = pixels.data[i + 1] + 50; // green
+            pixels.data[i + 2] = pixels.data[i + 2] * 0.5; //blue
+        }
+        return pixels;
+    };
+
+    const blueEffect = pixels => {
+        for(let i = 0; i < pixels.data.length; i += 4) {
+            pixels.data[i] = pixels.data[i] - 500; //red
+            pixels.data[i + 1] = pixels.data[i + 1] * 0.5; // green
+            pixels.data[i + 2] = pixels.data[i + 2] +50; //blue
+        }
+        return pixels;
+    };
+
+    const rgbSplitEffect = pixels => {
+        for(let i = 0; i < pixels.data.length; i += 4) {
+            pixels.data[i - 150] = pixels.data[i]; //red
+            pixels.data[i + 100] = pixels.data[i + 1]; // green
+            pixels.data[i - 150] = pixels.data[i + 2]; //blue
+        }
+        return pixels;
+    };
+
     getVideo();
     video.addEventListener('canplay', paintCanvas);
 }());
