@@ -25,24 +25,37 @@ import './styles.css';
 
         return setInterval(() => {
             ctx.drawImage(video, 0, 0, width, height);
-            //take the pixels out
+            // Take the pixels out
             let pixels = ctx.getImageData(0, 0, width, height);
+            // Add effect to the pixel
+            pixels = redEffect(pixels);
+            // Put it back
+            ctx.putImageData(pixels, 0, 0);
         }, 16);
     };
 
     const takePhoto = () => {
-        // play the sound
+        // Play the sound
         snap.currentTime = 0;
         snap.play();
-        //take the data out of the canvas
+        // Take the data out of the canvas
         const data = canvas.toDataURL('images/jpeg');
         const link = document.createElement('a');
         link.href = data;
-        link.setAttribute('download', 'handsome');
-        link.textContent = 'Download Image';
+        link.setAttribute('download', 'snapshot');
+        link.innerHTML = `<img src="${data}" alt="Snap shot"/>`;
         strip.insertBefore(link, strip.firstChild);
-        };
+    };
+
+    const redEffect = pixels => {
+        for(let i = 0; i < pixels.data.length; i += 4) {
+            pixels.data[i] = pixels.data[i] + 50; //red
+            pixels.data[i + 1] = pixels.data[i + 1] - 100; // green
+            pixels.data[i + 2] = pixels.data[i + 2] * 0.3; //blue
+        }
+        return pixels;
+    };
 
     getVideo();
-    video.addEventListener('canplay',paintCanvas);
+    video.addEventListener('canplay', paintCanvas);
 }());
