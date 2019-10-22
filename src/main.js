@@ -8,12 +8,26 @@ import './styles.css';
 
   const getVideo = () => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(localMediaStream => {
-            video.src = window.URL.createObjectURL(localMediaStream);
+        .then(MediaStream => {
+            video.srcObject = MediaStream;
             video.play();
         }).catch(error => {
-            console.error('You denied the webcam access', error);
+            console.log('You denied the webcam access', error);
         });
   };
+
+  const paintCanvas = () => {
+      const width = video.videoWidth;
+      const height = video.videoHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      return setInterval(() => {
+          ctx.drawImage(video, 0, 0, width, height);
+          //take the pixels out
+      }, 16);
+  };
+
   getVideo();
+  paintCanvas();
 }());
