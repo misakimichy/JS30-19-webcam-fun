@@ -1,5 +1,6 @@
 import './styles.css';
 (function(){
+    const button = document.querySelector('#photo-btn');
     const canvas = document.querySelector('.photo');
     const ctx = canvas.getContext('2d');
     const video = document.querySelector('.player');
@@ -55,8 +56,6 @@ import './styles.css';
                     ctx.globalAlpha = 1;
                     rgb.style.display = 'block';
                     break;
-                default :
-                    rgb.style.display = 'none';
             }
             ctx.putImageData(pixels, 0, 0);
         }, 16);
@@ -134,6 +133,7 @@ import './styles.css';
         return pixels;
     };
 
+    button.addEventListener('click', takePhoto);
     getVideo();
     video.addEventListener('canplay', paintCanvas);
 }());
