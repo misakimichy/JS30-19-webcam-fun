@@ -5,6 +5,7 @@ import './styles.css';
     const video = document.querySelector('.player');
     const strip = document.querySelector('.strip');
     const snap = document.querySelector('.snap');
+    const rgb = document.querySelector('.rgb');
     let filter = '';
 
     const getVideo = () => {
@@ -28,8 +29,35 @@ import './styles.css';
             // Take the pixels out
             let pixels = ctx.getImageData(0, 0, width, height);
             // Add effect to the pixel
-            pixels = redEffect(pixels);
-            // Put it back
+            switch(filter) {
+                case 'red' :
+                    pixels = redEffect(pixels);
+                    ctx.globalAlpha = 1;
+                    rgb.style.display = 'none';
+                    break;
+                case 'green' :
+                    pixels = greenEffect(pixels);
+                    ctx.globalAlpha = 1;
+                    rgb.style.display = 'none';
+                    break;
+                case 'blue' :
+                    pixels = blueEffect(pixels);
+                    ctx.globalAlpha = 1;
+                    rgb.style.display = 'none';
+                    break;
+                case 'rgb' :
+                    pixels = rgbSplitEffect(pixels);
+                    ctx.globalAlpha = 0.3;
+                    rgb.style.display = 'none';
+                    break;
+                case 'greenScreen' :
+                    pixels = greenScreen(pixels);
+                    ctx.globalAlpha = 1;
+                    rgb.style.display = 'block';
+                    break;
+                default :
+                    rgb.style.display = 'none';
+            }
             ctx.putImageData(pixels, 0, 0);
         }, 16);
     };
@@ -43,7 +71,7 @@ import './styles.css';
         const link = document.createElement('a');
         link.href = data;
         link.setAttribute('download', 'snapshot');
-        link.innerHTML = `<img src="${data}" alt="Snap shot"/>`;
+        link.innerHTML = `<img src="${data}" alt="Snapshot"/>`;
         strip.insertBefore(link, strip.firstChild);
     };
 
@@ -77,8 +105,31 @@ import './styles.css';
     const rgbSplitEffect = pixels => {
         for(let i = 0; i < pixels.data.length; i += 4) {
             pixels.data[i - 150] = pixels.data[i]; //red
-            pixels.data[i + 100] = pixels.data[i + 1]; // green
+            pixels.data[i + 300] = pixels.data[i + 1]; // green
             pixels.data[i - 150] = pixels.data[i + 2]; //blue
+        }
+        return pixels;
+    };
+
+    const greenScreen = pixels => {
+        const levels = {};
+        document.querySelectorAll('.rgb input').forEach(input => {
+            levels[input.name] = input.value;
+        });
+        for(let i = 0; i < pixels.data.length; i += 4) {
+            let red = pixels.data[i];
+            let green = pixels.data[i + 1];
+            let blue = pixels.data[i + 2];
+            let alpha = pixels.data[i + 3];
+
+            if(red >= levels.rmin &&
+                green >= levels.gmin &&
+                blue >= levels.bmin &&
+                red <= levels.rmax &&
+                green <= levels.gmax &&
+                blue <= levels.bmax) {
+                    pixels.data[i + 3] = 0;
+                }
         }
         return pixels;
     };
