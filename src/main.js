@@ -1,6 +1,12 @@
 import './styles.css';
 (function(){
-    const button = document.querySelector('#photo-btn');
+    const photoButton = document.querySelector('#photo-btn');
+    const redButton = document.querySelector('#red-btn');
+    const greenButton = document.querySelector('#green-btn');
+    const blueButton = document.querySelector('#blue-btn');
+    const rgbButton = document.querySelector('#rgb-btn');
+    const greenScreenButton = document.querySelector('#green-screen-btn');
+    const removeButton = document.querySelector('#remove-btn');
     const canvas = document.querySelector('.photo');
     const ctx = canvas.getContext('2d');
     const video = document.querySelector('.player');
@@ -48,7 +54,7 @@ import './styles.css';
                     break;
                 case 'rgb' :
                     pixels = rgbSplitEffect(pixels);
-                    ctx.globalAlpha = 0.3;
+                    ctx.globalAlpha = 0.2;
                     rgb.style.display = 'none';
                     break;
                 case 'greenScreen' :
@@ -56,6 +62,9 @@ import './styles.css';
                     ctx.globalAlpha = 1;
                     rgb.style.display = 'block';
                     break;
+                default :
+                    pixels;
+                    rgb.style.display = 'none';
             }
             ctx.putImageData(pixels, 0, 0);
         }, 16);
@@ -77,7 +86,7 @@ import './styles.css';
     const redEffect = pixels => {
         for(let i = 0; i < pixels.data.length; i += 4) {
             pixels.data[i] = pixels.data[i] + 50; //red
-            pixels.data[i + 1] = pixels.data[i + 1] - 100; // green
+            pixels.data[i + 1] = pixels.data[i + 1] - 200; // green
             pixels.data[i + 2] = pixels.data[i + 2] * 0.3; //blue
         }
         return pixels;
@@ -103,7 +112,7 @@ import './styles.css';
 
     const rgbSplitEffect = pixels => {
         for(let i = 0; i < pixels.data.length; i += 4) {
-            pixels.data[i - 150] = pixels.data[i]; //red
+            pixels.data[i - 100] = pixels.data[i]; //red
             pixels.data[i + 300] = pixels.data[i + 1]; // green
             pixels.data[i - 150] = pixels.data[i + 2]; //blue
         }
@@ -119,7 +128,7 @@ import './styles.css';
             let red = pixels.data[i];
             let green = pixels.data[i + 1];
             let blue = pixels.data[i + 2];
-            let alpha = pixels.data[i + 3];
+            // let alpha = pixels.data[i + 3];
 
             if(red >= levels.rmin &&
                 green >= levels.gmin &&
@@ -132,8 +141,19 @@ import './styles.css';
         }
         return pixels;
     };
+    
+    const setFilter = currentFilter => {
+        filter = currentFilter;
+        return filter;
+    };
 
-    button.addEventListener('click', takePhoto);
     getVideo();
     video.addEventListener('canplay', paintCanvas);
+    photoButton.addEventListener('click', takePhoto);
+    redButton.addEventListener('click', () => setFilter('red'));
+    greenButton.addEventListener('click', () => setFilter('green'));
+    blueButton.addEventListener('click', () => setFilter('blue'));
+    rgbButton.addEventListener('click', () => setFilter('rgb'));
+    greenScreenButton.addEventListener('click', () => setFilter('greenScreen'));
+    removeButton.addEventListener('click', () => setFilter('none'));
 }());
