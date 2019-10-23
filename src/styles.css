@@ -7,7 +7,8 @@ html {
 }
 
 body {
-    font-size: 10px;
+    font-size: 14px;
+    font-family: "Open sans", sans-serif;
     background: #e7e7e7;
 }
 
@@ -24,9 +25,26 @@ body {
     clear: both;
 }
 
+.controls {
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+button {
+    font-size: 16px;
+    border-radius: 3px;
+    padding: 10px;
+    margin-right: 10px;
+    min-width: 150px;
+}
+
 /* Canvas */
 .photo {
-    width: 100%;
+    width: 70%;
     float: left;
 }
 
